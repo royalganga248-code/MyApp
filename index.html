@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a0f1e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WorkHours">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Учёт рабочих часов</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Ambient background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <!-- Header -->
+    <header id="header">
+      <div class="header-inner">
+        <div class="logo-area">
+          <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.5"/>
+            <polyline points="16,8 16,16 21,20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="16" r="2" fill="currentColor"/>
+          </svg>
+          <span class="logo-text">WORKHOURS</span>
+        </div>
+        <button id="btn-stats" class="btn-icon" title="Статистика">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="10" width="4" height="11" rx="1"/>
+            <rect x="9" y="5" width="4" height="16" rx="1"/>
+            <rect x="16" y="13" width="4" height="8" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Month navigation -->
+    <nav id="month-nav">
+      <button id="prev" class="nav-btn" aria-label="Предыдущий месяц">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="15,18 9,12 15,6"/>
+        </svg>
+      </button>
+      <div id="month-display">
+        <span id="month-name"></span>
+        <span id="year-name"></span>
+      </div>
+      <button id="next" class="nav-btn" aria-label="Следующий месяц">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="9,18 15,12 9,6"/>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Calendar -->
+    <main id="calendar-wrapper">
+      <div id="day-headers">
+        <span>ПН</span><span>ВТ</span><span>СР</span><span>ЧТ</span><span>ПТ</span>
+        <span class="weekend">СБ</span><span class="weekend">ВС</span>
+      </div>
+      <div id="calendar"></div>
+    </main>
+
+    <!-- Summary bar -->
+    <div id="summary-bar">
+      <div class="stat-item">
+        <span class="stat-label">ДНЕЙ</span>
+        <span class="stat-value" id="stat-days">0</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-label">ЧАСОВ</span>
+        <span class="stat-value" id="stat-hours">0</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-label">СРЕДНЕЕ</span>
+        <span class="stat-value" id="stat-avg">—</span>
+      </div>
+    </div>
+
+    <!-- Input panel -->
+    <div id="input-panel" class="panel-hidden">
+      <div class="panel-header">
+        <span id="panel-date-label"></span>
+        <button id="panel-close" class="btn-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="panel-body">
+        <div class="input-group">
+          <label for="hours">ЧАСОВ</label>
+          <input type="number" id="hours" min="0" max="24" placeholder="0" inputmode="numeric">
+        </div>
+        <div class="panel-actions">
+          <button id="btn-save" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <polyline points="20,6 9,17 4,12"/>
+            </svg>
+            Сохранить
+          </button>
+          <button id="btn-clear" class="btn-danger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19,6l-1,14a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2L5,6"/>
+              <path d="M10,11v6M14,11v6"/>
+            </svg>
+            Удалить
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats overlay -->
+    <div id="stats-overlay" class="overlay-hidden">
+      <div class="overlay-inner">
+        <div class="overlay-header">
+          <h2>СТАТИСТИКА</h2>
+          <button id="stats-close" class="btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div id="stats-content"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+          console.log('SW registered:', reg.scope);
+        }).catch(err => {
+          console.error('SW registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
