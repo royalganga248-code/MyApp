@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.royalganga248_code.twa",
+        "sha256_cert_fingerprints": ["B5:8D:AA:62:D0:B7:9D:07:E5:0F:B3:5E:6C:C7:79:8D:FA:86:AF:66:33:34:2E:67:AA:BB:7B:FF:63:82:C3:EA"]
+      }
+    }]
