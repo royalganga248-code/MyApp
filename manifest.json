@@ -2,8 +2,8 @@
   "name": "Учёт рабочих часов",
   "short_name": "WorkHours",
   "description": "Мобильное приложение для учёта рабочего времени по дням",
-  "start_url": "/index.html",
-  "scope": "/",
+  "start_url": "/MyApp/index.html",
+  "scope": "/MyApp/"
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#060c1a",
